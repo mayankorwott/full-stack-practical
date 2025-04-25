@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub Users</title>
+</head>
+<body>
+  <h1>GitHub Users - Page 1</h1>
+  <ul id="userList"></ul>
+
+  <script>
+    fetch('https://api.github.com/users')
+      .then(response => response.json())
+      .then(data => {
+        const userList = document.getElementById('userList');
+        data.forEach(user => {
+          const li = document.createElement('li');
+          li.textContent = user.login;
+
+          
+          li.style.cursor = 'pointer';
+          li.onclick = () => {
+            window.open(`user.html?login=${user.login}`, '_blank');
+          };
+
+          userList.appendChild(li);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
+  </script>
+</body>
+</html>

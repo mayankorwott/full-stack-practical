@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Details</title>
+</head>
+<body>
+  <h1>User Details</h1>
+  <div id="userDetails"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const login = urlParams.get('login');
+
+    if (login) {
+      fetch(`https://api.github.com/users/${login}`)
+        .then(response => response.json())
+        .then(user => {
+          document.getElementById('userDetails').innerHTML = `
+            <h2>${user.name || user.login}</h2>
+            <p><strong>Username:</strong> ${user.login}</p>
+            <p><strong>Followers:</strong> ${user.followers}</p>
+            <p><strong>Following:</strong> ${user.following}</p>
+            <p><strong>Public Repos:</strong> ${user.public_repos}</p>
+            <p><strong>Location:</strong> ${user.location || 'N/A'}</p>
+            <p><strong>Bio:</strong> ${user.bio || 'No bio available'}</p>
+            <a href="${user.html_url}" target="_blank">Visit GitHub Profile</a>
+          `;
+        })
+        .catch(error => {
+          console.error('Error fetching user details:', error);
+        });
+    } else {
+      document.getElementById('userDetails').innerText = 'No user login provided.';
+    }
+  </script>
+</body>
+</html>
